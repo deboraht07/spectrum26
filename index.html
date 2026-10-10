@@ -104,7 +104,10 @@
       <div class="wrap hero-inner">
         <div class="hero-copy">
           <p class="hero-kicker" data-aos="fade-down">Annual college fest · 20–22 Nov 2026</p>
-          <h1 class="hero-title" data-aos="flip-up" data-aos-delay="80" data-aos-duration="900">Spectrum&nbsp;'26</h1>
+          <!-- once=false + mirror lets AOS replay the flip every time it leaves
+               and re-enters the viewport; theme.css runs the colour cycle. -->
+          <h1 class="hero-title" data-aos="flip-up" data-aos-delay="80" data-aos-duration="900"
+              data-aos-once="false" data-aos-mirror="true">Spectrum&nbsp;'26</h1>
           <p class="hero-sub" data-aos="fade-up" data-aos-delay="200">
             Three days, eight events, every colour of campus life. Pick the ones you love and save your seat.
           </p>
@@ -254,21 +257,21 @@
     <section class="section section-alt" id="highlights">
       <div class="wrap">
         <div class="section-head">
-          <p class="eyebrow" data-aos="fade-down">04 · Why bother</p>
+          <p class="eyebrow" data-aos="fade-down">04 · Why attend</p>
           <h2 data-aos="slide-right" data-aos-duration="750">What makes it worth it</h2>
         </div>
         <div class="tilt-row">
           <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="0">
-            <h3>All in one place</h3>
-            <p>Eight events, one page. Filter, compare and register without hunting for ten different forms.</p>
+            <h3>Three days, zero downtime</h3>
+            <p>Eight events across three days — morning heats to the final encore. Chase every one on the list, or go all in on your single obsession.</p>
           </div>
           <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="120">
-            <h3>Real seats, real time</h3>
-            <p>Seat counters update the second you register, so you always know what is still open.</p>
+            <h3>Nights you'll retell for years</h3>
+            <p>Battle of Bands under the open sky, a quiz league that gets loud, an open mic for the brave. These are the stories your batch keeps telling.</p>
           </div>
           <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="240">
-            <h3>Your pass, remembered</h3>
-            <p>Everything you sign up for lives under My events, even after you close the tab.</p>
+            <h3>Show up once, you're back every year</h3>
+            <p>12,000 students, real prizes, and the good kind of tired. The buzz that takes over campus for three days is the whole point of Spectrum.</p>
           </div>
         </div>
       </div>
@@ -306,13 +309,19 @@
         </div>
         <div class="gallery">
           <button class="gallery-item" type="button" data-aos="zoom-in" data-aos-duration="700">
-            <img src="images/college%20fest.jpg" alt="Students gathered at the fest ground" loading="lazy" />
+            <img src="images/2.jpg" alt="Students gathered at the fest ground" loading="lazy" />
           </button>
           <button class="gallery-item" type="button" data-aos="fade-up" data-aos-delay="60" data-aos-duration="700">
-            <img src="images/college%20fest%20(1).jpg" alt="A busy lane of fest stalls" loading="lazy" />
+            <img src="images/3.jpg" alt="A busy lane of fest stalls" loading="lazy" />
           </button>
           <button class="gallery-item" type="button" data-aos="fade-left" data-aos-duration="700">
-            <img src="images/College%20fests.jpg" alt="Crowd cheering at a campus event" loading="lazy" />
+            <img src="images/Cocs.jpg" alt="Crowd cheering at a campus event" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="fade-right" data-aos-delay="60" data-aos-duration="700">
+            <img src="images/f1s.jpg" alt="Highlights from the fest" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="zoom-in" data-aos-delay="120" data-aos-duration="700">
+            <img src="images/fest2025fl.jpg" alt="Fest 2025 celebrations" loading="lazy" />
           </button>
           <button class="gallery-item" type="button" data-aos="zoom-in-up" data-aos-delay="120" data-aos-duration="700">
             <img src="images/concert%20fireworks.jpg" alt="Fireworks over the concert stage" loading="lazy" />

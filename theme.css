@@ -71,6 +71,17 @@ body {
   -webkit-text-stroke: 3px var(--ink);
   paint-order: stroke fill;
   text-shadow: 6px 6px 0 var(--ink);
+  /* Always-on "spectrum" colour cycle — the name lives up to itself. Only the
+     fill animates, so it never fights the AOS flip transform. */
+  animation: spectrum-cycle 7s linear infinite;
+}
+@keyframes spectrum-cycle {
+  0%   { color: #ff3d81; }
+  20%  { color: #ffb41f; }
+  40%  { color: #2fe0cb; }
+  60%  { color: #4d7cff; }
+  80%  { color: #8f78ff; }
+  100% { color: #ff3d81; }
 }
 .hero-sub { color: var(--ink); font-weight: 500; }
 
@@ -196,7 +207,7 @@ body {
 
 /* ---------- Reduced motion: also stop the always-on loops ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .disc, .hero-art::after { animation: none !important; }
+  .marquee-track, .disc, .hero-art::after, .hero-title { animation: none !important; }
 }
 @media (max-width: 640px) {
   .hero-art::after { width: 96px; font-size: 0.9rem; }
