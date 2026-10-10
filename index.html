@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spectrum '26 · Campus Event Hub</title>
+  <meta name="description" content="Browse and register for every event at Spectrum '26, our college fest." />
+
+  <!-- Runs before the page paints: if JS is available we swap no-js -> js so
+       the AOS styles only hide elements when they can actually animate. With
+       JavaScript disabled the class stays and every element is visible. -->
+  <script>
+    (function () {
+      var c = document.documentElement.className.replace('no-js', 'js');
+      // Play the splash intro only when JS is running and motion is welcome.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) c += ' splashing';
+      document.documentElement.className = c;
+    })();
+  </script>
+
+  <!-- Fonts: a chunky display face for headlines, a clean sans for reading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- AOS (Animate On Scroll), vendored locally so the page never depends on a CDN.
+       Load order matters: style.css = structure, theme.css = skin,
+       aos-effects.css = our custom AOS animations. -->
+  <link rel="stylesheet" href="vendor/aos.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="aos-effects.css" />
+  <!-- Splash intro (opening animation) -->
+  <link rel="stylesheet" href="splash.css" />
+</head>
+<body>
+
+  <!-- ============ SPLASH INTRO ============
+       Three discs fly in from the sides and the name rises letter by letter,
+       then splash.js flies both into the header logo/name. The whole thing is
+       skipped for reduced-motion (and a CSS failsafe hides it after 7s). -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-bg"></div>
+    <div class="splash-stage">
+      <div class="splash-discs" id="splashDiscs">
+        <span class="sd sd-1"></span>
+        <span class="sd sd-2"></span>
+        <span class="sd sd-3"></span>
+      </div>
+      <p class="splash-word" id="splashWord" data-text="Spectrum '26"></p>
+      <p class="splash-sub">Campus Event Hub · 20–22 Nov 2026</p>
+    </div>
+    <button class="btn btn-ghost splash-skip" id="splashSkip" type="button">Skip intro</button>
+  </div>
+
+  <!-- Scroll progress bar. aos-effects.js fills the inner span as you scroll. -->
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- Accessible skip link for keyboard users -->
+  <a class="skip-link" href="#events">Skip to events</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="#top" class="brand" aria-label="Spectrum '26 home">
+        <!-- Logo: three overlapping colours = a spectrum -->
+        <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="18" cy="20" r="14" fill="#ff3d81" />
+          <circle cx="30" cy="20" r="14" fill="#ffe94d" class="blend" />
+          <circle cx="24" cy="31" r="14" fill="#2fe0cb" class="blend" />
+        </svg>
+        <span class="brand-name">Spectrum&nbsp;'26</span>
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="Main">
+        <a href="#events">Events</a>
+        <a href="#how">How it works</a>
+        <a href="#story">The story</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+        </button>
+        <button class="btn btn-ghost btn-my" id="myEventsBtn" type="button">
+          <svg class="btn-my-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 9h18M8 3v4M16 3v4" /></svg>
+          <span class="btn-my-label">My events</span> <span class="count-badge" id="myEventsCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO / BANNER ============ -->
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="hero-kicker" data-aos="fade-down">Annual college fest · 20–22 Nov 2026</p>
+          <h1 class="hero-title" data-aos="flip-up" data-aos-delay="80" data-aos-duration="900">Spectrum&nbsp;'26</h1>
+          <p class="hero-sub" data-aos="fade-up" data-aos-delay="200">
+            Three days, eight events, every colour of campus life. Pick the ones you love and save your seat.
+          </p>
+          <div class="hero-cta" data-aos="zoom-in-up" data-aos-delay="320">
+            <a href="#events" class="btn btn-primary">Browse events</a>
+            <a href="#story" class="btn btn-ghost">See the story</a>
+          </div>
+
+          <!-- Countdown to the first event -->
+          <div class="countdown" id="countdown" data-aos="fade-up" data-aos-delay="420" data-aos-duration="700" aria-live="off">
+            <div><strong id="cdDays">00</strong><span>days</span></div>
+            <div><strong id="cdHours">00</strong><span>hours</span></div>
+            <div><strong id="cdMins">00</strong><span>mins</span></div>
+            <div><strong id="cdSecs">00</strong><span>secs</span></div>
+          </div>
+          <p class="countdown-note" id="countdownNote">until the first event begins</p>
+        </div>
+
+        <!-- Decorative banner art: three overlapping colour discs that drift
+             slowly. This is the one always-on motion on the page, so it is not
+             tied to AOS (no data-aos) and is visible immediately. -->
+        <div class="hero-art" aria-hidden="true">
+          <span class="disc disc-1"></span>
+          <span class="disc disc-2"></span>
+          <span class="disc disc-3"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TICKER ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>HackSprint 24 ✷ Battle of Bands ✷ Pixel &amp; Brush ✷ Rhythm Rumble ✷ Campus Quiz League ✷ Futsal Frenzy ✷ Robo Soccer ✷ Open Mic Night ✷ Save your seat ✷&nbsp;</span>
+        <span>HackSprint 24 ✷ Battle of Bands ✷ Pixel &amp; Brush ✷ Rhythm Rumble ✷ Campus Quiz League ✷ Futsal Frenzy ✷ Robo Soccer ✷ Open Mic Night ✷ Save your seat ✷&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ============ LIVE STATS ============
+         data-aos-id lets our JavaScript run the count-up exactly when AOS
+         reveals the row (event: aos:in:stats). -->
+    <section class="stats wrap" id="stats" aria-label="Fest at a glance"
+             data-aos="fade-up" data-aos-id="stats" data-aos-offset="80" data-aos-duration="700">
+      <div class="stat"><strong id="statEvents">0</strong><span>events</span></div>
+      <div class="stat"><strong id="statSeats">0</strong><span>seats still open</span></div>
+      <div class="stat"><strong id="statRegs">0</strong><span>your registrations</span></div>
+    </section>
+
+    <!-- ============ EVENTS ============ -->
+    <section class="section" id="events">
+      <div class="wrap">
+        <div class="section-head" id="eventsHeading">
+          <p class="eyebrow" data-aos="fade-down">01 · Discover</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">Find your event</h2>
+          <p class="section-sub" data-aos="fade-up" data-aos-delay="80">Filter by category or search by name.</p>
+        </div>
+
+        <!-- The toolbar is anchored to the heading above, so the search + chips
+             arrive together with it no matter where they sit on the page. -->
+        <div class="toolbar" data-aos="fade-up" data-aos-anchor="#eventsHeading" data-aos-anchor-placement="top-bottom" data-aos-delay="50">
+          <label class="search">
+            <span class="visually-hidden">Search events by name</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+            <input type="search" id="searchInput" placeholder="Search events by name" autocomplete="off" />
+          </label>
+          <div class="chips" id="filterChips" role="group" aria-label="Filter by category"></div>
+        </div>
+
+        <p class="results-info" id="resultsInfo" aria-live="polite"></p>
+
+        <div class="grid" id="eventGrid"></div>
+
+        <div class="empty" id="emptyState" hidden>
+          <h3>No events match that search</h3>
+          <p>Try a different name or switch the category back to All.</p>
+          <button class="btn btn-primary" type="button" id="resetFilters">Show all events</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS (a real sequence, so numbered) ============ -->
+    <section class="section section-alt" id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow" data-aos="fade-down">02 · Steps</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">Three steps to your seat</h2>
+        </div>
+        <ol class="steps">
+          <li class="step" data-aos="fade-right"><span class="step-no">1</span><div><h3>Browse</h3><p>Scroll the cards or filter by category to see what's on.</p></div></li>
+          <li class="step" data-aos="fade-up" data-aos-delay="120"><span class="step-no">2</span><div><h3>Register</h3><p>Add your name, email and phone. Seats are limited and go fast.</p></div></li>
+          <li class="step" data-aos="fade-left" data-aos-delay="240"><span class="step-no">3</span><div><h3>Show up</h3><p>Find everything you signed up for under My events.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ STORY SCENES ============
+         The reveal-art uses the custom "mask-reveal" animation; the copy uses
+         data-aos-mirror + data-aos-once="false" so it animates out and back in
+         as you scroll. Each scene fires aos:in:scene, and aos-effects.js moves
+         the floating chapter tag to match. -->
+    <section class="section" id="story">
+      <div class="wrap">
+        <div class="section-head" id="storyHeading">
+          <p class="eyebrow" data-aos="fade-down">03 · The story</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">Three days, one arc</h2>
+          <p class="section-sub" data-aos="fade-up" data-aos-delay="80">Scroll the story — the tag on the left keeps your place.</p>
+        </div>
+
+        <article class="scene">
+          <div class="reveal-art"
+               data-aos="mask-reveal" data-aos-id="scene" data-chapter="Chapter 1 · Ignite"
+               data-aos-anchor="#storyHeading" data-aos-anchor-placement="top-bottom">
+            <div class="art-poster"><strong>Day 01</strong><span>Ignite · 20 Nov</span></div>
+          </div>
+          <div class="scene-copy" data-aos="fade-left" data-aos-delay="120" data-aos-mirror="true" data-aos-once="false">
+            <h2>It kicks off loud</h2>
+            <p>Opening ceremony at the Open Air Theatre, then straight into HackSprint and Battle of Bands. The campus does not really sleep on day one.</p>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="reveal-art"
+               data-aos="mask-reveal" data-aos-id="scene" data-chapter="Chapter 2 · Create"
+               data-aos-anchor="#storyHeading" data-aos-anchor-placement="top-bottom">
+            <div class="art-poster"><strong>Day 02</strong><span>Create · 21 Nov</span></div>
+          </div>
+          <div class="scene-copy" data-aos="fade-left" data-aos-delay="120" data-aos-mirror="true" data-aos-once="false">
+            <h2>Then it gets hands-on</h2>
+            <p>Paint, dance and quiz your way through day two. Studios and the auditorium run back-to-back from breakfast to lights-out.</p>
+          </div>
+        </article>
+
+        <article class="scene">
+          <div class="reveal-art"
+               data-aos="mask-reveal" data-aos-id="scene" data-chapter="Chapter 3 · Celebrate"
+               data-aos-anchor="#storyHeading" data-aos-anchor-placement="top-bottom">
+            <div class="art-poster"><strong>Day 03</strong><span>Celebrate · 22 Nov</span></div>
+          </div>
+          <div class="scene-copy" data-aos="fade-left" data-aos-delay="120" data-aos-mirror="true" data-aos-once="false">
+            <h2>And closes on a high</h2>
+            <p>Futsal finals, the robotics pitch and a closing Open Mic under the stars. Whoever wins, everyone leaves with a story.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ HIGHLIGHTS (custom tilt-3d AOS animation) ============ -->
+    <section class="section section-alt" id="highlights">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow" data-aos="fade-down">04 · Why bother</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">What makes it worth it</h2>
+        </div>
+        <div class="tilt-row">
+          <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="0">
+            <h3>All in one place</h3>
+            <p>Eight events, one page. Filter, compare and register without hunting for ten different forms.</p>
+          </div>
+          <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="120">
+            <h3>Real seats, real time</h3>
+            <p>Seat counters update the second you register, so you always know what is still open.</p>
+          </div>
+          <div class="tilt-card" data-aos="tilt-3d" data-aos-delay="240">
+            <h3>Your pass, remembered</h3>
+            <p>Everything you sign up for lives under My events, even after you close the tab.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BY THE NUMBERS (count-up via aos:in:count) ============ -->
+    <section class="section" id="numbers">
+      <div class="wrap">
+        <div class="numbers">
+          <div class="number" data-aos="zoom-in" data-aos-id="count" data-count="26" data-suffix="+">
+            <strong>0</strong><span>editions celebrated</span>
+          </div>
+          <div class="number" data-aos="zoom-in" data-aos-delay="100" data-aos-id="count" data-count="3">
+            <strong>0</strong><span>days of fest</span>
+          </div>
+          <div class="number" data-aos="zoom-in" data-aos-delay="200" data-aos-id="count" data-count="8">
+            <strong>0</strong><span>events to enter</span>
+          </div>
+          <div class="number" data-aos="zoom-in" data-aos-delay="300" data-aos-id="count" data-count="12" data-suffix="k+">
+            <strong>0</strong><span>students expected</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============
+         Every tile arrives with its own AOS animation (a mix of zoom, fade and
+         flip), staggered row by row. Click a tile to open it full-size. -->
+    <section class="section" id="gallery">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow" data-aos="fade-down">05 · Gallery</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">Moments from the fest</h2>
+          <p class="section-sub" data-aos="fade-up" data-aos-delay="80">A quick look at what the crowd, the stage and the stalls feel like.</p>
+        </div>
+        <div class="gallery">
+          <button class="gallery-item" type="button" data-aos="zoom-in" data-aos-duration="700">
+            <img src="images/college%20fest.jpg" alt="Students gathered at the fest ground" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="fade-up" data-aos-delay="60" data-aos-duration="700">
+            <img src="images/college%20fest%20(1).jpg" alt="A busy lane of fest stalls" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="fade-left" data-aos-duration="700">
+            <img src="images/College%20fests.jpg" alt="Crowd cheering at a campus event" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="zoom-in-up" data-aos-delay="120" data-aos-duration="700">
+            <img src="images/concert%20fireworks.jpg" alt="Fireworks over the concert stage" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="fade-right" data-aos-duration="700">
+            <img src="images/fest.jpg" alt="Evening view of the fest grounds" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="zoom-in" data-aos-delay="60" data-aos-duration="700">
+            <img src="images/142285669472819599.jpg" alt="Stage lights over the fest" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="fade-up" data-aos-delay="120" data-aos-duration="700">
+            <img src="images/248612841926902122.jpg" alt="Friends at the fest" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="flip-left" data-aos-duration="900">
+            <img src="images/537758011778670633.jpg" alt="Dancers mid-performance" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="flip-right" data-aos-delay="60" data-aos-duration="900">
+            <img src="images/73042825199831872.jpg" alt="Performers on the main stage" loading="lazy" />
+          </button>
+          <button class="gallery-item" type="button" data-aos="zoom-in-up" data-aos-duration="700">
+            <img src="images/89931323802725472.jpg" alt="Fest celebration in full swing" loading="lazy" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section section-alt" id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow" data-aos="fade-down">06 · Questions</p>
+          <h2 data-aos="slide-right" data-aos-duration="750">Before you ask</h2>
+        </div>
+        <div class="faq">
+          <details class="faq-item" data-aos="fade-up">
+            <summary>Do I need an account to register?</summary>
+            <p>No account, no password. Just your name, email and phone number on the event you want — that is the whole sign-up.</p>
+          </details>
+          <details class="faq-item" data-aos="fade-up" data-aos-delay="80">
+            <summary>How many events can I enter?</summary>
+            <p>As many as you can physically attend. Just avoid events that clash — check the date and time on each card before you confirm.</p>
+          </details>
+          <details class="faq-item" data-aos="fade-up" data-aos-delay="160">
+            <summary>Can I cancel a registration?</summary>
+            <p>Yes. Open My events and hit Cancel on any entry — your seat goes straight back to the pool for someone else.</p>
+          </details>
+          <details class="faq-item" data-aos="fade-up" data-aos-delay="240">
+            <summary>What happens when an event is full?</summary>
+            <p>Full events show a strikethrough and their register button is disabled. Follow the fest desk for waitlist announcements.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CALL TO ACTION ============ -->
+    <section class="section" id="join">
+      <div class="wrap">
+        <div class="cta" data-aos="zoom-in-up" data-aos-duration="800">
+          <h2>Ready to pick your events?</h2>
+          <p>Seats go fast and the good ones always fill first. Scan the list and lock in your spot.</p>
+          <a href="#events" class="btn btn-primary">Browse all events</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" id="contact">
+    <div class="wrap footer-inner">
+      <div data-aos="fade-up">
+        <p class="footer-brand">Spectrum '26</p>
+        <p class="footer-muted">Organised by the Student Activity Council.</p>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <h3>Contact the fest desk</h3>
+        <ul>
+          <li><a href="mailto:festdesk@spectrum26.edu">festdesk@spectrum26.edu</a></li>
+          <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+          <li>Student Activity Centre, Main Campus</li>
+        </ul>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <h3>Desk hours</h3>
+        <ul>
+          <li>Mon–Fri, 10 AM – 5 PM</li>
+          <li>Fest days, 8 AM – 9 PM</li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">© 2026 Spectrum Fest Committee</p>
+  </footer>
+
+  <!-- Floating chapter tag, moved by aos-effects.js on every aos:in:scene -->
+  <div class="chapter-tag" id="chapterTag" aria-hidden="true"></div>
+
+  <!-- ============ REGISTRATION DIALOG ============ -->
+  <dialog class="modal" id="registerDialog" aria-labelledby="registerTitle">
+    <form id="registerForm" novalidate>
+      <div class="modal-head">
+        <div>
+          <h2 id="registerTitle">Register</h2>
+          <p class="modal-sub" id="registerEventMeta"></p>
+        </div>
+        <button class="icon-btn" type="button" data-close aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+
+      <input type="hidden" id="eventId" />
+
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" data-field="name" autocomplete="name" placeholder="e.g. Anjali Menon" />
+        <p class="error" id="err-name" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" data-field="email" autocomplete="email" placeholder="you@college.edu" />
+        <p class="error" id="err-email" role="alert"></p>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input id="phone" name="phone" type="tel" inputmode="numeric" data-field="phone" autocomplete="tel" placeholder="10-digit mobile number" maxlength="10" />
+        <p class="error" id="err-phone" role="alert"></p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="submit">Confirm registration</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ SUCCESS DIALOG ============ -->
+  <dialog class="modal modal-center" id="successDialog" aria-labelledby="successTitle">
+    <svg class="tick" viewBox="0 0 52 52" aria-hidden="true">
+      <circle cx="26" cy="26" r="24" />
+      <path d="M15 27l8 8 14-16" />
+    </svg>
+    <h2 id="successTitle">You're registered!</h2>
+    <p class="success-text" id="successText"></p>
+    <p class="success-sub" id="successSub"></p>
+    <div class="success-actions">
+      <button class="btn btn-ghost" type="button" id="successViewMyEvents">View my events</button>
+      <button class="btn btn-primary" type="button" data-close>Done</button>
+    </div>
+  </dialog>
+
+  <!-- ============ MY EVENTS DIALOG ============ -->
+  <dialog class="modal" id="myEventsDialog" aria-labelledby="myEventsTitle">
+    <div class="modal-head">
+      <h2 id="myEventsTitle">My events</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+    </div>
+    <ul class="my-list" id="myEventsList"></ul>
+    <p class="my-empty" id="myEventsEmpty">You haven't registered for anything yet. Pick an event and it will show up here.</p>
+  </dialog>
+
+  <!-- Full-size image viewer for the gallery -->
+  <dialog class="modal lightbox" id="lightbox" aria-label="Image viewer">
+    <button class="icon-btn lightbox-close" type="button" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <img id="lightboxImg" alt="" />
+  </dialog>
+
+  <!-- AOS, then our code. events.js holds the data, script.js the behaviour,
+       aos-effects.js reacts to AOS reveal events. -->
+  <script src="vendor/aos.js"></script>
+  <script src="events.js"></script>
+  <script src="script.js"></script>
+  <script src="aos-effects.js"></script>
+  <script src="splash.js"></script>
+</body>
+</html>

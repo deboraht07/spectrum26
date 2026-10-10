@@ -1,0 +1,204 @@
+/* ==========================================================
+   theme.css : neo-brutalist skin for Spectrum '26
+   Loaded after style.css, so it overrides tokens and looks only.
+   Recipe: thick black outlines, hard offset shadows, loud flat
+   colours, stickers and a scrolling ticker.
+   ========================================================== */
+
+:root {
+  --bg: #ffe94d;
+  --surface: #ffffff;
+  --surface-2: #fff6a8;
+  --ink: #0d0d0d;
+  --muted: #2d2d2d;
+  --line: #0d0d0d;
+  --primary: #ff3d81;
+  --primary-ink: #ffffff;
+  --shadow: 5px 5px 0 #0d0d0d;
+  --blend: normal;
+}
+[data-theme="dark"] {
+  --bg: #15122b;
+  --surface: #201b45;
+  --surface-2: #2a2460;
+  --ink: #ffffff;
+  --muted: #d7d2ff;
+  --line: #ffffff;
+  --primary: #ff5c9a;
+  --primary-ink: #0d0d0d;
+  --shadow: 5px 5px 0 #ff5c9a;
+}
+
+/* Flat fill colour per category (used for card headers, chips, buttons) */
+[data-cat="Tech"]   { --fill: #8f78ff; }
+[data-cat="Music"]  { --fill: #ff7aa8; }
+[data-cat="Dance"]  { --fill: #ffb400; }
+[data-cat="Art"]    { --fill: #2fe0cb; }
+[data-cat="Quiz"]   { --fill: #d08cff; }
+[data-cat="Sports"] { --fill: #67e381; }
+
+::selection { background: var(--primary); color: #fff; }
+
+body {
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 18%, transparent) 1.5px, transparent 1.5px);
+  background-size: 20px 20px;
+}
+
+/* ---------- Header, buttons, icon buttons ---------- */
+.site-header { background: var(--bg); backdrop-filter: none; border-bottom: 3px solid var(--line); }
+.brand-name { font-size: 1.5rem; }
+.nav a { color: var(--ink); font-weight: 700; }
+.nav a:hover { color: var(--ink); text-decoration: underline wavy var(--primary) 2px; text-underline-offset: 6px; }
+
+.btn { border: 3px solid var(--line); box-shadow: 4px 4px 0 var(--line); }
+.btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--line); }
+.btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--line); }
+.btn-primary { background: var(--primary); color: var(--primary-ink); }
+.btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-2); }
+.icon-btn { border: 3px solid var(--line); background: var(--surface); box-shadow: 3px 3px 0 var(--line); }
+.icon-btn:hover { background: var(--surface-2); transform: rotate(-8deg); }
+.count-badge { background: var(--ink); color: var(--bg); }
+
+/* ---------- Hero ---------- */
+.hero-kicker {
+  display: inline-block; background: var(--ink); color: var(--bg); font-weight: 700;
+  padding: 0.3rem 0.9rem; border-radius: 8px; transform: rotate(-2deg);
+}
+.hero-title {
+  font-size: clamp(3.6rem, 14vw, 9rem);
+  color: var(--primary);
+  -webkit-text-stroke: 3px var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0 var(--ink);
+}
+.hero-sub { color: var(--ink); font-weight: 500; }
+
+.countdown div { border: 3px solid var(--line); background: var(--surface); box-shadow: 4px 4px 0 var(--line); border-radius: 12px; }
+.countdown span { color: var(--muted); font-weight: 700; }
+
+.disc { border: 3px solid var(--line); }
+.disc-1 { background: #ff3d81; }
+.disc-2 { background: #4d7cff; }
+.disc-3 { background: #2fe0cb; }
+/* Sticker slapped on the banner art */
+.hero-art::after {
+  content: "Seats go fast!";
+  position: absolute; right: 0; bottom: 4%;
+  display: grid; place-items: center; text-align: center;
+  width: 118px; aspect-ratio: 1; padding: 0.5rem;
+  border: 3px solid var(--line); border-radius: 50%;
+  background: var(--bg); color: var(--ink); font: 800 1.05rem/1.1 var(--font-display);
+  box-shadow: 4px 4px 0 var(--line);
+  animation: wobble 3s ease-in-out infinite alternate;
+}
+@keyframes wobble { from { transform: rotate(-10deg); } to { transform: rotate(10deg) scale(1.06); } }
+
+/* ---------- Ticker ---------- */
+.marquee { overflow: hidden; background: var(--ink); color: var(--bg); border-block: 3px solid var(--line); padding: 0.7rem 0; }
+.marquee-track {
+  display: flex; width: max-content;
+  font: 800 1.35rem var(--font-display); white-space: nowrap;
+  animation: ticker 28s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track span { padding-right: 0.9rem; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+/* ---------- Stats ---------- */
+.stats { padding-top: 2rem; }
+.stat { border: 3px solid var(--line); box-shadow: var(--shadow); }
+.stat strong { color: var(--ink); }
+.stat span { color: var(--muted); font-weight: 700; }
+[data-theme="light"] .stat:nth-child(1) { background: #ff9ec4; }
+[data-theme="light"] .stat:nth-child(2) { background: #8ff0e0; }
+[data-theme="light"] .stat:nth-child(3) { background: #bfb0ff; }
+
+/* ---------- Section titles, search, chips ---------- */
+.section-head h2 {
+  display: inline-block; background: var(--primary); color: var(--primary-ink);
+  border: 3px solid var(--line); box-shadow: 5px 5px 0 var(--line);
+  padding: 0.25rem 0.9rem; transform: rotate(-1deg);
+}
+.section-head p { color: var(--ink); font-weight: 500; margin-top: 0.9rem; }
+.search input { border: 3px solid var(--line); box-shadow: 4px 4px 0 var(--line); }
+.search input:focus { box-shadow: 6px 6px 0 var(--primary); border-color: var(--line); }
+.chip { border: 3px solid var(--line); box-shadow: 3px 3px 0 var(--line); }
+.chip:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--line); border-color: var(--line); }
+.chip[aria-pressed="true"] { background: var(--fill, var(--primary)); color: #0d0d0d; border-color: var(--line); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--line); }
+.chip[data-category="All"] { --fill: #ffffff; }
+.results-info { color: var(--ink); font-weight: 700; }
+
+/* ---------- Event cards ---------- */
+.card {
+  border: 3px solid var(--line); border-top-width: 3px; box-shadow: 6px 6px 0 var(--line);
+  background: var(--surface); overflow: hidden;
+}
+.card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--line); }
+.card-top {
+  margin: -1.25rem -1.25rem 0; padding: 0.7rem 1.25rem;
+  background: var(--fill); border-bottom: 3px solid var(--line);
+}
+.badge { background: var(--surface); color: var(--ink); border: 2px solid var(--line); }
+.seats { background: var(--surface); color: var(--ink); border: 2px solid var(--line); padding: 0.05rem 0.65rem; border-radius: 99px; }
+.seats.low { background: #ff3b30; color: #fff; }
+.seats.full { background: var(--ink); color: var(--bg); }
+.card-desc { color: var(--muted); }
+.meta svg { color: var(--ink); }
+.seatbar { height: 12px; border: 2px solid var(--line); background: var(--surface); }
+.seatbar span { background: var(--fill); border-right: 2px solid var(--line); border-radius: 0; }
+.card.is-full { opacity: 1; }
+.card.is-full h3 { text-decoration: line-through; text-decoration-thickness: 3px; }
+.card .btn { background: var(--fill); color: #0d0d0d; }
+.card .btn:disabled {
+  color: var(--ink);
+  background: repeating-linear-gradient(45deg, var(--surface), var(--surface) 7px, var(--surface-2) 7px, var(--surface-2) 14px);
+}
+.registered-tag { color: var(--ink); background: var(--fill); border: 2px solid var(--line); padding: 0 0.5rem; border-radius: 6px; }
+.starts-in { color: var(--muted); font-weight: 700; }
+/* Once AOS has finished, hover should react instantly (AOS leaves slow delays behind) */
+.card.settled { transition: transform 0.15s, box-shadow 0.15s !important; transition-delay: 0s !important; }
+
+/* ---------- Steps ---------- */
+.section-alt { background: var(--surface-2); border-block: 3px solid var(--line); }
+.step { border: 3px solid var(--line); box-shadow: var(--shadow); }
+.step-no { background: var(--primary); color: var(--primary-ink); border: 3px solid var(--line); }
+.step p { color: var(--muted); }
+
+/* ---------- FAQ ---------- */
+.faq { display: grid; gap: 1rem; max-width: 760px; }
+.faq-item { background: var(--surface); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.faq-item summary {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem; cursor: pointer; list-style: none; font: 800 1.15rem var(--font-display);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; flex: none; display: grid; place-items: center; width: 32px; height: 32px;
+  border: 3px solid var(--line); border-radius: 50%; background: var(--bg); transition: transform 0.2s;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); background: var(--primary); color: var(--primary-ink); }
+.faq-item p { padding: 0 1.25rem 1.1rem; color: var(--muted); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: #0d0d0d; color: #fff; border-top: 3px solid var(--line); }
+.footer-brand { color: #ffe94d; }
+
+/* ---------- Dialogs ---------- */
+.modal { border: 3px solid var(--line); border-radius: 18px; box-shadow: 8px 8px 0 var(--line); }
+.modal::backdrop { background: rgba(13, 13, 13, 0.7); backdrop-filter: none; }
+.field input { border: 3px solid var(--line); background: var(--surface); border-radius: 12px; }
+.field input:focus { border-color: var(--line); box-shadow: 4px 4px 0 var(--primary); }
+.field input[aria-invalid="true"] { border-color: var(--danger); box-shadow: 4px 4px 0 var(--danger); }
+.error { font-weight: 700; }
+.my-item { border: 3px solid var(--line); border-left: 10px solid var(--fill); box-shadow: 3px 3px 0 var(--line); }
+.modal-sub, .success-text { color: var(--muted); }
+
+/* ---------- Reduced motion: also stop the always-on loops ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .disc, .hero-art::after { animation: none !important; }
+}
+@media (max-width: 640px) {
+  .hero-art::after { width: 96px; font-size: 0.9rem; }
+  .marquee-track { font-size: 1.1rem; }
+}

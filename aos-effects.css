@@ -1,0 +1,82 @@
+/* ==========================================================
+   aos-effects.css : custom AOS animations + the "story" section
+   AOS only toggles the .aos-animate class; the visuals below are
+   our own CSS, so these are custom AOS animations.
+   ========================================================== */
+
+/* Custom animation 1: 3D tilt entrance (cards swing up out of perspective)
+   Guarded by html:not(.no-js), so with JavaScript off these elements stay
+   fully visible instead of being stuck at opacity:0 forever. */
+html:not(.no-js) [data-aos="tilt-3d"] {
+  opacity: 0;
+  transform: perspective(900px) rotateX(38deg) rotateY(-8deg) translateY(70px) scale(0.9);
+  transition-property: transform, opacity;
+}
+html:not(.no-js) [data-aos="tilt-3d"].aos-animate {
+  opacity: 1;
+  transform: perspective(900px) rotateX(0) rotateY(0) translateY(0) scale(1);
+}
+
+/* Custom animation 2: mask reveal (a hard wipe, like a poster being pasted up) */
+html:not(.no-js) [data-aos="mask-reveal"] { clip-path: inset(0 100% 0 0); transition-property: clip-path; }
+html:not(.no-js) [data-aos="mask-reveal"].aos-animate { clip-path: inset(0 0 0 0); }
+html:not(.no-js) [data-aos="mask-reveal"] .art-poster { transform: scale(1.18); transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+html:not(.no-js) [data-aos="mask-reveal"].aos-animate .art-poster { transform: scale(1); }
+
+/* Responsive AOS: gentler versions on phones */
+@media (max-width: 640px) {
+  html:not(.no-js) [data-aos="tilt-3d"] { transform: translateY(40px); }
+  html:not(.no-js) [data-aos="tilt-3d"].aos-animate { transform: none; }
+  html:not(.no-js) [data-aos="mask-reveal"] { clip-path: inset(100% 0 0 0); }
+}
+
+/* Scroll progress bar + chapter tag (driven by AOS events in aos-effects.js) */
+.progress { position: fixed; inset: 0 0 auto 0; height: 6px; z-index: 40; background: transparent; }
+.progress span { display: block; height: 100%; width: 0; background: var(--primary); border-right: 3px solid var(--line); }
+.chapter-tag {
+  position: fixed; left: 1rem; bottom: 1rem; z-index: 30; opacity: 0; transform: translateY(12px);
+  background: var(--ink); color: var(--bg); font: 800 0.95rem var(--font-display);
+  padding: 0.45rem 1rem; border-radius: 999px; border: 3px solid var(--line); box-shadow: 4px 4px 0 var(--primary);
+  transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+}
+.chapter-tag.show { opacity: 1; transform: none; }
+
+/* Story scene: poster art + copy */
+.scene { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; margin-bottom: clamp(3rem, 7vw, 5rem); }
+.reveal-art { border: 3px solid var(--line); border-radius: 22px; overflow: hidden; box-shadow: 8px 8px 0 var(--line); }
+.art-poster {
+  position: relative; aspect-ratio: 4 / 3; display: grid; align-content: end; padding: 1.5rem;
+  background: radial-gradient(circle at 20% 25%, #ff3d81 0 22%, transparent 23%),
+              radial-gradient(circle at 78% 30%, #ffe94d 0 18%, transparent 19%),
+              radial-gradient(circle at 55% 78%, #2fe0cb 0 24%, transparent 25%), #4d3df5;
+  color: #fff;
+}
+.art-poster strong { font: 800 clamp(2.6rem, 8vw, 5rem)/0.95 var(--font-display); text-shadow: 4px 4px 0 #0d0d0d; }
+.art-poster span { font-weight: 700; text-shadow: 2px 2px 0 #0d0d0d; }
+.scene-copy h2 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; margin-bottom: 1rem; }
+.scene-copy p { font-size: 1.1rem; color: var(--ink); max-width: 46ch; }
+
+/* 3D highlight cards */
+.tilt-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin: 1.5rem 0 clamp(3rem, 7vw, 5rem); }
+.tilt-card { border: 3px solid var(--line); border-radius: 20px; padding: 1.5rem; box-shadow: var(--shadow); background: var(--surface); }
+.tilt-card:nth-child(1) { background: #ff9ec4; } .tilt-card:nth-child(2) { background: #8ff0e0; } .tilt-card:nth-child(3) { background: #ffd35c; }
+[data-theme="dark"] .tilt-card { background: var(--surface); }
+.tilt-card h3 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+.tilt-card p { color: var(--muted); }
+
+/* Count-up numbers */
+.numbers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center; }
+.number { border: 3px solid var(--line); border-radius: 18px; background: var(--ink); color: var(--bg); padding: 1.2rem 0.5rem; box-shadow: 5px 5px 0 var(--primary); }
+.number strong { display: block; font: 800 clamp(2rem, 5vw, 3.2rem) var(--font-display); font-variant-numeric: tabular-nums; }
+
+/* Final call to action */
+.cta {
+  text-align: center; display: grid; justify-items: center; gap: 1rem; padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+  background: var(--primary); color: var(--primary-ink); border: 3px solid var(--line); border-radius: 26px; box-shadow: 10px 10px 0 var(--line);
+}
+.cta h2 { font-size: clamp(2.2rem, 7vw, 4.5rem); letter-spacing: -0.04em; }
+.cta p { max-width: 44ch; }
+.cta .btn-primary { background: var(--ink); color: var(--bg); }
+
+@media (max-width: 900px) { .scene, .tilt-row { grid-template-columns: 1fr; } .numbers { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .chapter-tag { display: none; } }
